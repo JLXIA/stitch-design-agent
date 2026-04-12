@@ -1,0 +1,32 @@
+{
+  "name": "stitch",
+  "version": "1.0.0",
+  "description": "Stitch Design Agent Plugin",
+  "author": "Stitch Design Agent",
+  "homepage": "https://github.com/jilinxia/stitch-design-agent",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jilinxia/stitch-design-agent"
+  },
+  "bugs": {
+    "url": "https://github.com/jilinxia/stitch-design-agent/issues"
+  },
+  "keywords": [
+    "stitch",
+    "design",
+    "agent",
+    "plugin"
+  ],
+  "categories": [
+    "design",
+    "agent",
+    "plugin"
+  ],
+  "contributors": [
+    "Stitch Design Agent"
+  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/jilinxia/stitch-design-agent"
+  }
+}
