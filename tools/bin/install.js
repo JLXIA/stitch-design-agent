@@ -10,6 +10,9 @@ function parseArgs() {
   const args = process.argv.slice(2);
   let claude = false;
   let antigravity = false;
+  let jetski = false;
+  let gemini = false;
+  let cursor = false;
   let codex = false;
   let pathArg = null;
   let help = false;
@@ -27,6 +30,18 @@ function parseArgs() {
       antigravity = true;
       continue;
     }
+    if (args[i] === '--jetski') {
+      jetski = true;
+      continue;
+    }
+    if (args[i] === '--gemini') {
+      gemini = true;
+      continue;
+    }
+    if (args[i] === '--cursor') {
+      cursor = true;
+      continue;
+    }
     if (args[i] === '--codex') {
       codex = true;
       continue;
@@ -37,7 +52,7 @@ function parseArgs() {
     }
   }
 
-  return { help, claude, antigravity, codex, pathArg };
+  return { help, claude, antigravity, jetski, gemini, cursor, codex, pathArg };
 }
 
 function getTargets(opts) {
@@ -50,6 +65,15 @@ function getTargets(opts) {
   }
   if (opts.antigravity) {
     targets.push({ name: "Antigravity", path: path.join(HOME, ".gemini", "antigravity", "skills") });
+  }
+  if (opts.jetski) {
+    targets.push({ name: "Jetski", path: path.join(HOME, ".gemini", "jetski", "skills") });
+  }
+  if (opts.gemini) {
+    targets.push({ name: "Gemini", path: path.join(HOME, ".gemini", "skills") });
+  }
+  if (opts.cursor) {
+    targets.push({ name: "Cursor", path: path.join(HOME, ".cursor", "skills") });
   }
   if (opts.codex) {
     targets.push({ name: "Codex", path: path.join(HOME, ".codex", "skills") });
@@ -66,6 +90,9 @@ Stitch Design Agent Installer
 Options:
   --claude       Install skills to ~/.claude/skills
   --antigravity  Install skills to ~/.gemini/antigravity/skills
+  --jetski       Install skills to ~/.gemini/jetski/skills
+  --gemini       Install skills to ~/.gemini/skills
+  --cursor       Install skills to ~/.cursor/skills
   --codex        Install skills to ~/.codex/skills
   --path <dir>   Install skills to a custom directory
   --help, -h     Show this help message
@@ -87,7 +114,11 @@ function copyRecursiveSync(src, dest) {
 }
 
 function main() {
+  console.log("Stitch Design Agent Installer started.");
+  console.log("Arguments received:", process.argv.slice(2));
+  
   const opts = parseArgs();
+  console.log("Parsed options:", opts);
   
   if (opts.help) {
     printHelp();

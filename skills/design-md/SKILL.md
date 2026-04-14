@@ -1,5 +1,5 @@
 ---
-name: design-md
+name: stitch::design-md
 description: >-
   Extract design system guidelines (DESIGN.md) from static HTML files. Analyzes
   atmosphere, colors, typography, geometry, and depth.

@@ -1,5 +1,5 @@
 ---
-name: edit-design
+name: stitch::edit-design
 description: >-
   Edit existing screens using Stitch MCP. Includes targeted prompt formulation,
   asset download, and metadata tracking.

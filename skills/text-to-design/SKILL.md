@@ -1,5 +1,5 @@
 ---
-name: text-to-design
+name: stitch::text-to-design
 description: >-
   Generate new screens from a text prompt using Stitch MCP. Includes prompt
   enhancement pipeline, design mappings, and professional UI/UX terminology.

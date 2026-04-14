@@ -57,8 +57,17 @@ You can use `npx` pointing directly to the GitHub repository to install the skil
 # Install skills for Claude Code
 npx github:jilinxia/stitch-design-agent --claude
 
-# Install skills for Antigravity (Jetski)
+# Install skills for Antigravity
 npx github:jilinxia/stitch-design-agent --antigravity
+
+# Install skills for Jetski
+npx github:jilinxia/stitch-design-agent --jetski
+
+# Install skills for Gemini CLI
+npx github:jilinxia/stitch-design-agent --gemini
+
+# Install skills for Cursor
+npx github:jilinxia/stitch-design-agent --cursor
 
 # Install skills for Codex
 npx github:jilinxia/stitch-design-agent --codex
