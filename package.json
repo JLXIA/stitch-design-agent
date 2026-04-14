@@ -9,7 +9,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
-    "tools/bin"
+    "tools/bin",
+    "skills",
+    "agents",
+    "plugin.json"
   ],
   "keywords": [
     "claude-code",

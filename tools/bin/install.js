@@ -4,6 +4,8 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 
+console.log("Stitch install script loaded. Executing file...");
+
 const HOME = os.homedir();
 
 function parseArgs() {
