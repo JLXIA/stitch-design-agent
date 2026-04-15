@@ -6,26 +6,44 @@ description: >-
 
 # Extract Static HTML
 
-This skill allows you to extract a self-contained static HTML file from a built web application, which is useful for sharing or previewing designs.
+This skill allows you to extract a self-contained static HTML file from a web application. It supports two strategies:
+- **Strategy A (Static)**: Converts JSX/React files to HTML statically using a Python script.
+- **Strategy B (Dynamic)**: Runs the app locally and captures the rendered DOM from a browser.
 
-> [!IMPORTANT]
-> This skill relies on the `extract_inline_html.py` script to process the HTML and inline assets.
+## Comparison and Decision Framework
 
-## Workflow
+### Pros and Cons
+
+| Strategy | Pros | Cons |
+| :--- | :--- | :--- |
+| **Strategy A (Static)** | - Fast; no server startup needed.<br>- Works purely on source files.<br>- Explicit control over state in mock. | - Manual setup often required (`MockPage.jsx`).<br>- Misses dynamic data and runtime styles.<br>- Harder to maintain if components change frequently. |
+| **Strategy B (Dynamic)** | - High fidelity; captures exactly what is rendered.<br>- Zero mock creation effort.<br>- Handles complex UI and live data easily. | - Slower (requires server spin-up).<br>- Requires runnable application environment.<br>- Requires state management in app to capture correct view. |
+
+### Choice Decision
+
+-   **Default to Strategy B (Dynamic)** when the app is runnable and high fidelity is needed.
+-   **Fallback to Strategy A (Static)** when the app cannot be run or for fast structural snapshots.
+
+***
+
+## Strategy A: Static Extraction (JSX to HTML Script)
+
+This method relies on the `extract_inline_html.py` script to process the HTML and inline assets.
+
+### Workflow
 
 Follow these steps to generate a single, self-contained HTML file from a built web application.
 
-### Prerequisites
+#### Prerequisites
 
 - You must have the output directory of the built web app containing `index.html` and its assets (CSS, JS, images).
-
 
 Use the Python script to convert JSX directly to HTML. If the page uses custom components, create a flattened mock file first.
 
 *   **Usage**:
     1.  **Preparation (For Complex Pages Only)**: If the page imports custom React components, create a temporary `MockPage.jsx` that inlines the rendered output of those components, resolves dynamic data, and replaces icons with placeholders.
 
-        #### Including the Full Page Layout
+        ##### Including the Full Page Layout
 
         Most React apps wrap every page in a shared shell — typically defined in `App.js` or a layout component — that includes a **header/navigation bar** at the top and a **footer** at the bottom. The extraction script only sees what you put in the mock file, so if you omit these shared components the extracted HTML will be missing the nav and footer.
 
@@ -44,7 +62,7 @@ Use the Python script to convert JSX directly to HTML. If the page uses custom c
            - Flattened footer
         5. **Verify** that the mock's structure matches what a user would see at the corresponding route in a browser. If the app has a sidebar layout, include the sidebar too.
 
-        #### Handling Conditional Rendering / UI State
+        ##### Handling Conditional Rendering / UI State
 
         The extraction script converts JSX **statically** — it does not execute React code. This means conditional expressions like `{isOpen ? <ComponentA /> : <ComponentB />}` are NOT evaluated. The mock file must contain only the **concrete HTML for the desired state**, with all conditional logic removed.
 
@@ -61,7 +79,7 @@ Use the Python script to convert JSX directly to HTML. If the page uses custom c
         > [!WARNING]
         > Never include fake data that doesn't exist in the initial app state. For example, don't add a "Songs Gallery" section with mock results if the app starts with an empty results array. Only include UI that actually appears in the chosen state.
 
-        #### Excluding Floating/Interactive Elements
+        ##### Excluding Floating/Interactive Elements
 
         Extracted static HTML is often used for visual comparison or design review. Floating interactive elements like AI assistants, chat widgets, cookie banners, and feedback buttons can obscure the main content and cause false positives in visual regression tests if they render dynamically.
 
@@ -119,3 +137,16 @@ Use the Python script to convert JSX directly to HTML. If the page uses custom c
 
     5.  **Cleanup**: Delete the temporary `MockPage.jsx` file after generation.
 
+## Strategy B: Dynamic Extraction (Browser-based Capture)
+
+This method is preferred when the application requires a complex environment to render or when visual fidelity to the live state is critical.
+
+### Workflow
+
+1.  **Start the App**: Run the development server locally in the workspace (e.g., `npm run dev`). Ensure it is running and note the assigned port.
+2.  **Navigate**: Use a browser automation subagent to open the application URL (e.g., `http://localhost:5173`).
+3.  **Wait for Render**: Allow time for the page to fully load and for all React components to mount and render their data.
+4.  **Extract DOM**: Use available JavaScript execution tools or DOM retrieval tools (such as `browser_get_dom` or executing `document.documentElement.outerHTML`) to capture the fully rendered structure of the page.
+    - *Note*: Ensure any necessary permissions for script execution in browsers are set per your policy.
+5.  **Save to File**: Save the captured HTML string to a target file (e.g., in a project `.stitch` folder or as requested by the user).
+6.  **Stop Server**: Terminate the server task once extraction is verified.
