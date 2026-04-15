@@ -10,19 +10,21 @@ This skill allows you to extract a self-contained static HTML file from a web ap
 - **Strategy A (Static)**: Converts JSX/React files to HTML statically using a Python script.
 - **Strategy B (Dynamic)**: Runs the app locally and captures the rendered DOM from a browser.
 
-## Comparison and Decision Framework
+## Which Strategy to Use
 
-### Pros and Cons
+Work through these checks in order — the first "no" sends you to Strategy A:
 
-| Strategy | Pros | Cons |
+1. **Do you have browser automation with JS execution?** If no → **Strategy A**.
+2. **Can the app run locally** (dependencies installed, dev server starts)? If no → **Strategy A**.
+3. **Do you need a specific UI state** that's hard to reach without mocking (e.g., error screens, empty states)? If yes → **Strategy A** (you control the state explicitly in the mock).
+4. Otherwise → **Strategy B** (highest fidelity with the least manual effort).
+
+| | Strategy A (Static) | Strategy B (Dynamic) |
 | :--- | :--- | :--- |
-| **Strategy A (Static)** | - Fast; no server startup needed.<br>- Works purely on source files.<br>- Explicit control over state in mock. | - Manual setup often required (`MockPage.jsx`).<br>- Misses dynamic data and runtime styles.<br>- Harder to maintain if components change frequently. |
-| **Strategy B (Dynamic)** | - High fidelity; captures exactly what is rendered.<br>- Zero mock creation effort.<br>- Handles complex UI and live data easily. | - Slower (requires server spin-up).<br>- Requires runnable application environment.<br>- Requires state management in app to capture correct view. |
-
-### Choice Decision
-
--   **Default to Strategy B (Dynamic)** when the app is runnable and high fidelity is needed.
--   **Fallback to Strategy A (Static)** when the app cannot be run or for fast structural snapshots.
+| **Speed** | Fast — no server needed | Slower — requires server spin-up |
+| **Fidelity** | May miss dynamic data/styles | Captures exactly what is rendered |
+| **Setup** | Manual mock often required | Zero mock effort |
+| **State control** | Explicit — you choose | Depends on app's default state |
 
 ***
 
@@ -139,14 +141,20 @@ Use the Python script to convert JSX directly to HTML. If the page uses custom c
 
 ## Strategy B: Dynamic Extraction (Browser-based Capture)
 
-This method is preferred when the application requires a complex environment to render or when visual fidelity to the live state is critical.
+This method is preferred when the application requires a complex environment to render or when visual fidelity to the live state is critical. See the **Choice Decision** section above for prerequisites.
 
 ### Workflow
 
 1.  **Start the App**: Run the development server locally in the workspace (e.g., `npm run dev`). Ensure it is running and note the assigned port.
 2.  **Navigate**: Use a browser automation subagent to open the application URL (e.g., `http://localhost:5173`).
 3.  **Wait for Render**: Allow time for the page to fully load and for all React components to mount and render their data.
-4.  **Extract DOM**: Use available JavaScript execution tools or DOM retrieval tools (such as `browser_get_dom` or executing `document.documentElement.outerHTML`) to capture the fully rendered structure of the page.
-    - *Note*: Ensure any necessary permissions for script execution in browsers are set per your policy.
+4.  **Extract DOM**: Execute `document.documentElement.outerHTML` in the browser to capture the fully rendered DOM.
+    
+    > [!WARNING]
+    > **Large pages may cause the browser subagent to truncate its report** due to file size limits (especially from injected styles).
+    > To handle this:
+    > - **Instruct the subagent explicitly** in your prompt not to truncate output for readability.
+    > - **Hybrid Fallback**: If content is still too large, run JS in the browser to remove `<style>` tags before extraction (e.g., `document.querySelectorAll('style').forEach(el => el.remove());`). You must then re-add the styles statically in your parent context (e.g., adding links to Tailwind CDN or reading source CSS).
 5.  **Save to File**: Save the captured HTML string to a target file (e.g., in a project `.stitch` folder or as requested by the user).
 6.  **Stop Server**: Terminate the server task once extraction is verified.
+
