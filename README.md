@@ -6,106 +6,30 @@ Stitch agents and skills that enable AI assistants to design and build modern us
 
 ### Skills
 This plugin installs several skills to assist with design tasks:
-- **text-to-design**: Generate user interfaces from text descriptions.
-- **code-to-design**: Assist in converting code structures to design representations.
-- **design-md**: Manage and maintain `DESIGN.md` files as the source of truth.
-- **design-system**: Extract and manage design tokens and systems.
-- **edit-design**: Modify and refine screens directly within the Stitch platform.
-- **extract-static-html**: Capture high-fidelity static HTML for visual regression testing.
-- **upload-to-stitch**: Upload assets and screens to the Stitch project.
+
+*   **text-to-design**: Generate high-fidelity user interfaces directly from natural language text descriptions.
+*   **code-to-design**: Assist in converting existing code structures or component lists into design representations.
+*   **design-md**: Manage and maintain `DESIGN.md` files as the single source of truth for project design.
+*   **design-system**: Extract and manage consistent design tokens, color palettes, and typography systems.
+*   **edit-design**: Modify and refine screens directly within the Stitch platform using automated commands.
+*   **extract-static-html**: Capture high-fidelity static HTML and screenshots for visual regression testing.
+*   **upload-to-stitch**: Upload generated assets, screens, and design files to your Stitch project.
+
 
 ## Installation
 
-Choose the instructions below based on the agent platform you are using.
-
-### 1. Jetski
-For environments using the Jetski agent framework, copy the skills and agents directly into your application data directory.
-
 ```bash
-# Clone the repository
-git clone https://github.com/jilinxia/stitch-design-agent.git
-
-# Copy skills to the Jetski skills directory
-cp -r stitch-design-agent/skills/* ~/.gemini/jetski/skills/
-
-# Copy agents to the Jetski agents directory
-cp -r stitch-design-agent/agents/* ~/.gemini/jetski/agents/
+npx skills add JLXIA/stitch-design-agent
 ```
 
-### 2. Gemini CLI
-If you are using the Gemini CLI, you can install the skills directly from the repository or from a local clone.
+## Usage
 
-**From the Repository:**
-```bash
-gemini skills install https://github.com/jilinxia/stitch-design-agent.git --path skills
-```
+Once the skills are installed, you can invoke them using your agent's command interface or by referencing them in your prompts.
 
-**From a Local Clone:**
-```bash
-git clone https://github.com/jilinxia/stitch-design-agent.git
-gemini skills install ./stitch-design-agent/skills/
-```
+Example usage in a prompt:
+> "Use the `stitch::text-to-design` skill to create a login page for a mobile app."
 
-### 3. Claude Code
-
-For Claude Code, users can install and use these skills in several ways:
-
-#### Method A: Using npx (Easiest)
-You can use `npx` pointing directly to the GitHub repository to install the skills into your agent's directory. Flags `--claude`, `--antigravity`, and `--codex` are supported:
-
-```bash
-# Install skills for Claude Code
-npx github:jilinxia/stitch-design-agent --claude
-
-# Install skills for Antigravity
-npx github:jilinxia/stitch-design-agent --antigravity
-
-# Install skills for Jetski
-npx github:jilinxia/stitch-design-agent --jetski
-
-# Install skills for Gemini CLI
-npx github:jilinxia/stitch-design-agent --gemini
-
-# Install skills for Cursor
-npx github:jilinxia/stitch-design-agent --cursor
-
-# Install skills for Codex
-npx github:jilinxia/stitch-design-agent --codex
-```
-
-#### Method B: Manual Installation
-Users can clone the repository and reference the skills directory when starting Claude Code.
-
-```bash
-# Clone the repository
-git clone https://github.com/jilinxia/stitch-design-agent.git
-
-# Run Claude Code with the skills directory
-claude --plugin-dir ./stitch-design-agent/skills
-```
-
-#### Method C: Marketplace Installation (Experimental)
-If you are using a plugin manager that supports the `/plugin` commands (like [Addy Osmani's agent-skills](https://github.com/addyosmani/agent-skills)), you can add this repository as a source:
-
-```bash
-# Add the repository to your marketplace sources
-/plugin marketplace add jilinxia/stitch-design-agent
-
-# Install the skills
-/plugin install stitch-design-agent
-```
-
-### 4. Cursor
-For Cursor, you can make these skills available by adding them to your custom rules.
-
-```bash
-# Clone the repository
-git clone https://github.com/jilinxia/stitch-design-agent.git
-
-# Copy relevant SKILL.md files to your project's cursor rules
-# Example:
-cp stitch-design-agent/skills/design-md/SKILL.md .cursor/rules/design-md.md
-```
+For specific skill documentation, refer to the `SKILL.md` file in each skill's directory within `skills/`.
 
 ## License
 This project is licensed under the terms specified in the `plugin.json` or standard repository license.
