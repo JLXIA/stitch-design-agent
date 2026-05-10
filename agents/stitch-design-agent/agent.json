@@ -1,7 +1,0 @@
-{
-  "name": "stitch-design-agent",
-  "description": "Agent that orchestrates specialized skills to handle UI/UX design tasks using Stitch. Use this agent for all UI design requests, including creating new designs, mockups, wireframes, web or mobile app design, screen generation, editing, design system management, and converting existing frontend code to Stitch designs.",
-  "configPath": {
-    "relativePathToConfig": "config.yaml"
-  }
-}
