@@ -5,7 +5,7 @@ A collection of agent skills and plugins for [Google Stitch](https://stitch.with
 ## Quick Start
 
 ```bash
-npx plugins add google-labs-code/stitch-skills
+npx plugins add JLXIA/stitch-design-agent
 ```
 
 This installs all three plugins: **stitch-design** (6 skills), **stitch-build** (3 skills), and **stitch-utilities** (4 skills).
