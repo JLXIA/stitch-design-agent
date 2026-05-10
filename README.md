@@ -1,35 +1,110 @@
-# Stitch Design Agent Plugin
+# Stitch Design Skills
 
-Stitch agents and skills that enable AI assistants to design and build modern user interfaces.
+A collection of agent skills and plugins for [Google Stitch](https://stitch.withgoogle.com), following the [Agent Skills](https://agentskills.io) open standard. Compatible with coding agents such as Antigravity, Gemini CLI, Claude Code, and Cursor.
 
-## Features
-
-### Skills
-This plugin installs several skills to assist with design tasks:
-
-*   **text-to-design**: Generate high-fidelity user interfaces directly from natural language text descriptions.
-*   **code-to-design**: Assist in converting existing code structures or component lists into design representations.
-*   **design-md**: Manage and maintain `DESIGN.md` files as the single source of truth for project design.
-*   **design-system**: Extract and manage consistent design tokens, color palettes, and typography systems.
-*   **edit-design**: Modify and refine screens directly within the Stitch platform using automated commands.
-*   **extract-static-html**: Capture high-fidelity static HTML and screenshots for visual regression testing.
-*   **upload-to-stitch**: Upload generated assets, screens, and design files to your Stitch project.
-
-
-## Installation
+## Quick Start
 
 ```bash
-npx skills add JLXIA/stitch-design-agent
+npx plugins add google-labs-code/stitch-skills
 ```
 
-## Usage
+This installs all three plugins: **stitch-design** (6 skills), **stitch-build** (3 skills), and **stitch-utilities** (4 skills).
 
-Once the skills are installed, you can invoke them using your agent's command interface or by referencing them in your prompts.
+You can also install from a local checkout:
 
-Example usage in a prompt:
-> "Use the `stitch::text-to-design` skill to create a login page for a mobile app."
+```bash
+npx plugins add /path/to/stitch-skills
+```
 
-For specific skill documentation, refer to the `SKILL.md` file in each skill's directory within `skills/`.
+## Prerequisites
 
-## License
-This project is licensed under the terms specified in the `plugin.json` or standard repository license.
+These skills require the **Stitch MCP** server to be configured and running in your agent's environment. Make sure you have followed the [Stitch MCP Setup Instructions](https://stitch.withgoogle.com/docs/mcp/setup/) to register the server and set up appropriate environment variables and credentials.
+
+## Available Plugins
+
+### Design (`stitch-design`)
+
+Core design workflows for creating, managing, and optimizing designs within Stitch.
+
+| Skill | Description | Prompt Example |
+|---|---|---|
+| [code-to-design](plugins/stitch-design/skills/code-to-design/) | Convert frontend code (React, Vue, etc.) to a Stitch Design via HTML extraction + design system + upload | *"Upload the frontend code at `/path/to/dashboard` into a Stitch project named 'Dashboard-Migration-2026'."* |
+| [generate-design](plugins/stitch-design/skills/generate-design/) | Generate new screens from text or images, edit existing screens, and create design variants | *"Make a browse tab for a mobile app for romance and date night ideas."* |
+| [manage-design-system](plugins/stitch-design/skills/manage-design-system/) | Manage design systems in Stitch — upload DESIGN.md and apply themes to screens | *"Upload our design system from `.stitch/DESIGN.md` and apply it to all screens."* |
+| [extract-design-md](plugins/stitch-design/skills/extract-design-md/) | Extract a comprehensive DESIGN.md directly from frontend source code | *"Scan `/src` and extract the design system into `.stitch/DESIGN.md`."* |
+| [extract-static-html](plugins/stitch-design/skills/extract-static-html/) | Extract self-contained static HTML from running web apps, inlining CSS and images | *"Extract a static HTML snapshot of `http://localhost:3000/profile`."* |
+| [upload-to-stitch](plugins/stitch-design/skills/upload-to-stitch/) | Upload local assets (images, mockups, HTML) to a Stitch project | *"Upload `.stitch/landing_page.html` to Stitch project `projects/987654321`."* |
+
+---
+
+### Build (`stitch-build`)
+
+Code generation, framework integration, and asset compilation from Stitch designs.
+
+| Skill | Description | Prompt Example |
+|---|---|---|
+| [react-components](plugins/stitch-build/skills/react-components/) | Convert Stitch screens to React component systems with automated validation and design token consistency | *"Convert all screens in Stitch project `projects/123` to React components."* |
+| [remotion](plugins/stitch-build/skills/remotion/) | Generate walkthrough videos from Stitch projects using Remotion with smooth transitions and zooming | *"Generate a walkthrough video of the Stitch project `projects/456`."* |
+| [shadcn-ui](plugins/stitch-build/skills/shadcn-ui/) | Expert guidance for integrating and building applications with shadcn/ui components | *"Set up shadcn/ui and build a data table with sorting and filtering."* |
+
+---
+
+### Utilities (`stitch-utilities`)
+
+Supporting tools for enhancing prompts, generating design specs, and enforcing design standards.
+
+| Skill | Description | Prompt Example |
+|---|---|---|
+| [design-md](plugins/stitch-utilities/skills/design-md/) | Analyze Stitch projects and generate comprehensive DESIGN.md files in semantic language | *"Analyze Stitch project `projects/123` and generate a DESIGN.md."* |
+| [enhance-prompt](plugins/stitch-utilities/skills/enhance-prompt/) | Transform vague UI ideas into polished, Stitch-optimized prompts with UI/UX keywords | *"Enhance this prompt: 'make a settings page'."* |
+| [stitch-loop](plugins/stitch-utilities/skills/stitch-loop/) | Generate complete multi-page websites from a single prompt with automated validation | *"Build a 5-page portfolio website with Stitch."* |
+| [taste-design](plugins/stitch-utilities/skills/taste-design/) | Generate DESIGN.md files enforcing premium, anti-generic UI standards | *"Generate a premium DESIGN.md with strict typography and calibrated colors."* |
+
+## Repository Structure
+
+```text
+plugins/
+├── stitch-design/          — Core design workflow plugin
+│   ├── plugin.json
+│   └── skills/
+│       ├── code-to-design/
+│       ├── generate-design/
+│       ├── manage-design-system/
+│       ├── extract-design-md/
+│       ├── extract-static-html/
+│       └── upload-to-stitch/
+├── stitch-build/           — Code generation & build plugin
+│   ├── plugin.json
+│   └── skills/
+│       ├── react-components/
+│       ├── remotion/
+│       └── shadcn-ui/
+└── stitch-utilities/       — Design utilities & assistants plugin
+    ├── plugin.json
+    └── skills/
+        ├── design-md/
+        ├── enhance-prompt/
+        ├── stitch-loop/
+        └── taste-design/
+```
+
+Each skill follows the Agent Skills standard:
+
+```text
+skills/<skill-name>/
+├── SKILL.md           — The "Mission Control" for the agent
+├── scripts/           — Executable enforcers (Validation & Networking)
+├── resources/         — The knowledge base (Checklists & Style Guides)
+└── examples/          — The "Gold Standard" syntactically valid references
+```
+
+## Adding New Skills
+
+All new skills need to follow the file structure above to implement the Agent Skills open standard.
+
+### Great candidates for new skills
+* **Validation**: Skills that convert Stitch HTML to other UI frameworks and validate the syntax.
+* **Decoupling Data**: Skills that convert static design content into external mock data files.
+* **Generate Designs**: Skills that generate new design screens in Stitch from a given set of data.
+
+This is not an officially supported Google product. This project is not eligible for the [Google Open Source Software Vulnerability Rewards Program](https://bughunters.google.com/open-source-security).
