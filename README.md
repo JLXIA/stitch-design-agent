@@ -4,17 +4,32 @@ A collection of agent skills and plugins for [Google Stitch](https://stitch.with
 
 ## Quick Start
 
-```bash
-npx plugins add JLXIA/stitch-design-agent
-```
-
-This installs all three plugins: **stitch-design** (6 skills), **stitch-build** (3 skills), and **stitch-utilities** (4 skills).
-
-You can also install from a local checkout:
+### 1. Install Plugins (Recommended)
+The fastest way to set up the full Stitch plugin suite globally.
 
 ```bash
-npx plugins add /path/to/stitch-skills
+npx plugins add JLXIA/stitch-design-agent --scope project --target claude-code
+
 ```
+
+### 2. Install Skills Selectively
+Choose only the specific skills you need.
+
+> [!IMPORTANT]
+> Stitch Design Skills often have inter-dependencies. If you choose to install skills selectively, ensure you include all required dependencies.
+
+```bash
+npx skills add JLXIA/stitch-design-agent
+```
+
+You can run the following commands to see the help documentation for plugins and skills:
+
+```bash
+npx plugins --help
+
+npx skills --help
+```
+
 
 ## Prerequisites
 
@@ -28,12 +43,12 @@ Core design workflows for creating, managing, and optimizing designs within Stit
 
 | Skill | Description | Prompt Example |
 |---|---|---|
-| [code-to-design](plugins/stitch-design/skills/code-to-design/) | Convert frontend code (React, Vue, etc.) to a Stitch Design via HTML extraction + design system + upload | *"Upload the frontend code at `/path/to/dashboard` into a Stitch project named 'Dashboard-Migration-2026'."* |
-| [generate-design](plugins/stitch-design/skills/generate-design/) | Generate new screens from text or images, edit existing screens, and create design variants | · *"Make a browse tab for a mobile app for romance and date night ideas."*<br>· *"Edit the login screen to add a 'Remember Me' checkbox and change the button color to blue."*<br>· *"Generate 3 design variants of the home screen with dark mode and high-density layouts."* |
-| [manage-design-system](plugins/stitch-design/skills/manage-design-system/) | Manage design systems in Stitch — upload DESIGN.md and apply themes to screens | *"Upload our design system from `.stitch/DESIGN.md` and apply it to all screens."* |
-| [extract-design-md](plugins/stitch-design/skills/extract-design-md/) | Extract a comprehensive DESIGN.md directly from frontend source code | *"Scan `/src` and extract the design system into `.stitch/DESIGN.md`."* |
-| [extract-static-html](plugins/stitch-design/skills/extract-static-html/) | Extract self-contained static HTML from running web apps, inlining CSS and images | *"Extract a static HTML snapshot of `http://localhost:3000/profile`."* |
-| [upload-to-stitch](plugins/stitch-design/skills/upload-to-stitch/) | Upload local assets (images, mockups, HTML) to a Stitch project | *"Upload `.stitch/landing_page.html` to Stitch project `projects/987654321`."* |
+| [stitch-design::code-to-design](plugins/stitch-design/skills/code-to-design/) | Convert frontend code (React, Vue, etc.) to a Stitch Design via HTML extraction + design system + upload | *"Upload the frontend code at `/path/to/dashboard` into a Stitch project named 'Dashboard-Migration-2026'."* |
+| [stitch-design::generate-design](plugins/stitch-design/skills/generate-design/) | Generate new screens from text or images, edit existing screens, and create design variants | · *"Make a browse tab for a mobile app for romance and date night ideas."*<br>· *"Edit the login screen to add a 'Remember Me' checkbox and change the button color to blue."*<br>· *"Generate 3 design variants of the home screen with dark mode and high-density layouts."* |
+| [stitch-design::manage-design-system](plugins/stitch-design/skills/manage-design-system/) | Manage design systems in Stitch — upload DESIGN.md and apply themes to screens | *"Upload our design system from `.stitch/DESIGN.md` and apply it to all screens."* |
+| [stitch-design::extract-design-md](plugins/stitch-design/skills/extract-design-md/) | Extract a comprehensive DESIGN.md directly from frontend source code | *"Scan `/src` and extract the design system into `.stitch/DESIGN.md`."* |
+| [stitch-design::extract-static-html](plugins/stitch-design/skills/extract-static-html/) | Extract self-contained static HTML from running web apps, inlining CSS and images | *"Extract a static HTML snapshot of `http://localhost:3000/profile`."* |
+| [stitch-design::upload-to-stitch](plugins/stitch-design/skills/upload-to-stitch/) | Upload local assets (images, mockups, HTML) to a Stitch project | *"Upload `.stitch/landing_page.html` to Stitch project `projects/987654321`."* |
 
 ---
 
